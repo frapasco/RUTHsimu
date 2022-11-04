@@ -4,15 +4,6 @@ DetectorConstruction::DetectorConstruction(){}
 DetectorConstruction::~DetectorConstruction(){}
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
-  G4NistManager* nist = G4NistManager::Instance();
-  G4RotationMatrix* rotMatrix = new G4RotationMatrix();
-  /*
-    rotMatrix->rotateX(0.*deg);
-    rotMatrix->rotateY(0.*deg);
-    rotMatrix->rotateZ(0.*deg);
-  */
-
-  
   //--------------------------------------------------------
   //visualization attributes--------------------------------
   //--------------------------------------------------------
@@ -32,6 +23,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
   //materials-----------------------------------------------
   //--------------------------------------------------------
+  G4NistManager* nist = G4NistManager::Instance();
+  
   G4Material* defaultMat = nist->FindOrBuildMaterial("G4_AIR");
   G4Material* Al = nist->FindOrBuildMaterial("G4_Al");
   G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
@@ -45,7 +38,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4double pressure = 3.e-18*pascal;
   G4Material* vacuum = new G4Material("interGalactic", atomicNumber, massOfMole, density, kStateGas, temperature, pressure);
 
-  
   //--------------------------------------------------------
   //world volume--------------------------------------------
   //--------------------------------------------------------
@@ -62,14 +54,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
   //source--------------------------------------------------
   //--------------------------------------------------------
+  //parameters that describe the source geometry
   G4double sourceExtDiameter = 12.7*mm;
   G4double coreDiameter = 7.*mm;
   G4double sourceTotLength = 79.*mm;
-  G4double AuLayer1Thickness = 0.00051*mm;
-  G4double AuLayer2Thickness = 0.0010*mm;
-  G4double AmLayerThickness = 0.00051*mm;
-  G4double AuLayer3Thickness = 0.0008*mm;
-  G4double AgLayerThickness = 0.229*mm;
+  G4double AuLayer1Thickness = 0.00051*mm;//layer A
+  G4double AuLayer2Thickness = 0.0010*mm;//layer B
+  G4double AmLayerThickness = 0.00051*mm;//layer C
+  G4double AuLayer3Thickness = 0.0008*mm;//layer D
+  G4double AgLayerThickness = 0.229*mm;//layer F
   G4double sourceThickness = AuLayer1Thickness+AuLayer2Thickness+AmLayerThickness+AuLayer3Thickness+AgLayerThickness;
 
   //mother volume
@@ -78,20 +71,27 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, 0.*mm), sourceLog, "source", worldLog, false, 0);
   
   //case
-  G4Tubs* caseCyl = new G4Tubs("caseCyl", 0.*mm, 0.5*sourceExtDiameter, 0.5*(sourceTotLength-sourceThickness-1*mm) , 0.*deg, 360.*deg);
+  G4Tubs* caseCyl = new G4Tubs("caseCyl", 0.*mm, 0.5*sourceExtDiameter, 0.5*(sourceTotLength-sourceThickness-1.*mm), 0.*deg, 360.*deg);
   G4Tubs* caseTube = new G4Tubs("caseTube", 0.5*coreDiameter, 0.5*sourceExtDiameter, 0.5*(sourceThickness+1.*mm), 0.*deg, 360.*deg);
   G4LogicalVolume* caseCylLog = new G4LogicalVolume(caseCyl, Al, "caseCylLog");
   G4LogicalVolume* caseTubeLog = new G4LogicalVolume(caseTube, Al, "caseCylLog");
   caseCylLog->SetVisAttributes(solidBlue);
   caseTubeLog->SetVisAttributes(solidBlue);
-  new G4PVPlacement(0, G4ThreeVector(0.*m, 0.*m, -0.5*(sourceThickness+1*mm)), caseCylLog, "sourceCaseCyl", sourceLog, false, 0);
-  new G4PVPlacement(0, G4ThreeVector(0.*m, 0.*m, 0.5*(sourceTotLength-sourceThickness-1*mm)), caseTubeLog, "sourceCaseTube", sourceLog, false, 0);
+  new G4PVPlacement(0, G4ThreeVector(0.*m, 0.*m, -0.5*(sourceThickness+1.*mm)),/*shifted of the thickness of the source plus the extra 1*mm, which is multiplied by 0.5 also in the tube part, so the whole volume is centered in the mother volume*/
+		    caseCylLog, "sourceCaseCyl", sourceLog, false, 0);
+  new G4PVPlacement(0, G4ThreeVector(0.*m, 0.*m, 0.5*(sourceTotLength-sourceThickness-1.*mm)),
+		    caseTubeLog, "sourceCaseTube", sourceLog, false, 0);
 
   //source core
   G4Tubs* sourceCore = new G4Tubs("sourceCore", 0.*mm, 0.5*coreDiameter, 0.5*sourceThickness, 0.*deg, 360.*deg);
   G4LogicalVolume* sourceCoreLog = new G4LogicalVolume(sourceCore, defaultMat, "AgLayerLog");
   sourceCoreLog->SetVisAttributes(solidGreen);
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.5*(sourceTotLength-sourceThickness)-1.*mm), sourceCoreLog, "sourceCore", sourceLog, false, 0);
+  new G4PVPlacement(0, G4ThreeVector(0., 0.,
+				     0.5*(sourceTotLength-sourceThickness)-1.*mm),/*added at the end of the cylinder and inside the tube*/
+		    sourceCoreLog, "sourceCore", sourceLog, false, 0);
+  //for positioning the core elements one has to consider that each layer is after the full lenght of the previous one,
+  //   and since the G4Tubs is positioned in the middle of his length one has to multiply by 0.5 the thickness
+  //   of the layer that one wants to add.
   
   //Au1
   G4Tubs* AuLayer1 = new G4Tubs("AuLayer1", 0.*mm, 0.5*coreDiameter, 0.5*AuLayer1Thickness, 0.*deg, 360.*deg);
