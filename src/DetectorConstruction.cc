@@ -28,7 +28,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4Material* defaultMat = nist->FindOrBuildMaterial("G4_AIR");
   G4Material* Al = nist->FindOrBuildMaterial("G4_Al");
   G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
-  G4Material* Am = nist->FindOrBuildMaterial("G4_Am");
+  G4Material* Am = nist->FindOrBuildMaterial("G4_Am");//frapasco->to be modified with the correct isotope, for simplicity let's approx Am+Au layer to just Am since we don't have the proportions of the alloy
   G4Material* Ag = nist->FindOrBuildMaterial("G4_Ag");
   //vacuum
   G4double atomicNumber = 1.;
@@ -68,7 +68,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //mother volume
   G4Tubs* sourceMother = new G4Tubs("sourceMother", 0*mm, 0.5*sourceExtDiameter, 0.5*sourceTotLength, 0.*deg, 360.*deg);
   G4LogicalVolume* sourceLog = new G4LogicalVolume(sourceMother, defaultMat, "sourceMotherLog");
-  new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, 0.*mm), sourceLog, "source", worldLog, false, 0);
+  new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, 0.*mm), sourceLog, "source", worldLog, false, 0);//frapasco->positioning of the full source
   
   //case
   G4Tubs* caseCyl = new G4Tubs("caseCyl", 0.*mm, 0.5*sourceExtDiameter, 0.5*(sourceTotLength-sourceThickness-1.*mm), 0.*deg, 360.*deg);
