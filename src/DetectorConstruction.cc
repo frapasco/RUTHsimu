@@ -32,7 +32,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4Material* defaultMat = nist->FindOrBuildMaterial("G4_AIR");
   G4Material* Al = nist->FindOrBuildMaterial("G4_Al");
   G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
-  G4Material* Am = nist->FindOrBuildMaterial("G4_Am");//frapasco->to be modified with the correct isotope, for simplicity let's approx Am+Au layer to just Am since we don't have the proportions of the alloy
+  G4Material* Am= nist->FindOrBuildMaterial("G4_Am");//frapasco->to be modified with the correct isotope, for simplicity let's approx Am+Au layer to just Am since we don't have the proportions of the alloy
   G4Material* Ag = nist->FindOrBuildMaterial("G4_Ag");
   G4Isotope* Am241 = new G4Isotope("Am241", 95, 241, 241.056829*g/mole); // atomic number, number of nucleons, mass of mole
   G4Element* elAm241 = new G4Element("elAm241", "Am-241", 1); //name, symbol, number of isotopes
