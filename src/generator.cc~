@@ -1,0 +1,4 @@
+PrimaryGenerator::PrimaryGenerator(){
+  fParticleGun = new G4ParticleGun(1);
+}
+PrimaryGenerator::~PrimaryGenerator(){}
