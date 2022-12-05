@@ -29,10 +29,10 @@ target_link_libraries(sim ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 #set(PROJECT_SCRIPTS
- # run.mac
-  #vis.mac
-  #)
-
+#run.mac
+#vis.mac
+#)
+ 
 foreach(_script ${PROJECT_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
@@ -40,6 +40,9 @@ foreach(_script ${PROJECT_SCRIPTS})
     COPYONLY
     )
 endforeach()
+
+configure_file(scripts/make.sh scripts/make.sh COPYONLY)
+configure_file(scripts/x.sh scripts/x.sh COPYONLY)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
