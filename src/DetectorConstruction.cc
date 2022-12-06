@@ -103,7 +103,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //mother volume
   G4Box* support = new G4Box("support", 12.05*mm, 50.*mm, 0.5*totLength);
   G4LogicalVolume* supportLog = new G4LogicalVolume(support, defaultMat, "supportLog");
-  new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, -(totLength-0.5*sourceTotLength)), supportLog, "support", worldLog, false, 0);
+  new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, -0.5*totLength), supportLog, "support", worldLog, false, 0);
   
   //--------------------------------------------------------
   //source--------------------------------------------------
@@ -113,7 +113,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //mother volume
   G4Tubs* sourceMother = new G4Tubs("sourceMother", 0*mm, 0.5*sourceExtDiameter, 0.5*sourceTotLength, 0.*deg, 360.*deg);
   G4LogicalVolume* sourceLog = new G4LogicalVolume(sourceMother, defaultMat, "sourceMotherLog");
-  new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, 0.*mm), sourceLog, "source", supportLog, false, 0);
+  new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, 0.5*totLength-targetThickness-distTarget-coll1Thickness-distC1-coll2Thickness-distC2-0.5*sourceTotLength), sourceLog, "source", supportLog, false, 0);
   
   //case
   G4Tubs* caseCyl = new G4Tubs("caseCyl", 0.*mm, 0.5*sourceExtDiameter, 0.5*(sourceTotLength-sourceThickness-1.*mm), 0.*deg, 360.*deg);
@@ -179,7 +179,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VSolid* Collimator1 = new G4SubtractionSolid("SupportCollimator1-HoleCollimator1", suppColl1, holeColl1, 0, G4ThreeVector(0.*mm,-0.5*suppColl1Y+0.5*collH1Y+2.60*mm,0.*mm));
   G4LogicalVolume* Coll1Log = new G4LogicalVolume(Collimator1, Al, "Coll1Log");
   Coll1Log->SetVisAttributes(solidSilver);
-  new G4PVPlacement(0, G4ThreeVector(0, 0.5*sourceExtDiameter, 0.5*sourceTotLength+distC2+coll2Thickness+distC1+0.5*coll1Thickness),
+  new G4PVPlacement(0, G4ThreeVector(0, 0.5*sourceExtDiameter, 0.5*totLength-targetThickness-distTarget-0.5*coll1Thickness),
 		    Coll1Log, "Collimator1", supportLog, false, 0); //da cambiare G4ThreeVector
   
   //Collimator 2
@@ -188,14 +188,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VSolid* Collimator2 = new G4SubtractionSolid("SupportCollimator2-HoleCollimator2", suppColl2, holeColl2, 0, G4ThreeVector(0.*mm,-0.5*suppColl2Y+0.5*collH2Y+2.55*mm,0.*mm)); 
   G4LogicalVolume* Coll2Log = new G4LogicalVolume(Collimator2, Al, "Coll2Log");
   Coll2Log->SetVisAttributes(solidSilver);
-  new G4PVPlacement(0, G4ThreeVector(0,0.5*sourceExtDiameter,0.5*sourceTotLength+distC2+0.5*coll2Thickness),
+  new G4PVPlacement(0, G4ThreeVector(0,0.5*sourceExtDiameter,0.5*totLength-targetThickness-distTarget-coll1Thickness-distC1-0.5*coll2Thickness),
 		    Coll2Log, "Collimator2", supportLog, false, 0); //da cambiare G4ThreeVector
   
   //Target
   G4Tubs* Target = new G4Tubs("Target", 0.*mm, 0.5*targetDiameter, 0.5*targetThickness, 0.*deg, 360.*deg);
   G4LogicalVolume* TargetLog = new G4LogicalVolume(Target, AuTarget, "TargetLog");
   TargetLog->SetVisAttributes(solidYellow);
-  new G4PVPlacement(0, G4ThreeVector(0,0,0.5*sourceTotLength+distC2+coll2Thickness+distC1+coll1Thickness+distTarget+0.5*targetThickness),
+  new G4PVPlacement(0, G4ThreeVector(0,0,0.5*totLength-0.5*targetThickness),
 		    TargetLog, "Target", supportLog, false, 0); //da cambiare G4ThreeVector
 
   
