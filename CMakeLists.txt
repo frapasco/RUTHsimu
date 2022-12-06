@@ -41,9 +41,6 @@ foreach(_script ${PROJECT_SCRIPTS})
     )
 endforeach()
 
-configure_file(scripts/make.sh scripts/make.sh COPYONLY)
-configure_file(scripts/x.sh scripts/x.sh COPYONLY)
-
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
