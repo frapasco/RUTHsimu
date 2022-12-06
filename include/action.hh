@@ -6,21 +6,21 @@
 #include "G4SystemOfUnits.hh"
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
+#include "G4Geantino.hh"
+#include "G4IonTable.hh"
 
-#include "generator.hh"
-
-class MyActionInitialization : public G4VUserActionInitialization{
+class ActionInitialization : public G4VUserActionInitialization{
 public:
-  MyActionInitialization();
-  ~MyActionInitialization();
+  ActionInitialization();
+  ~ActionInitialization();
   
   virtual void Build() const; 
 };
 
-class MyPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction{
+class PrimaryGenerator : public G4VUserPrimaryGeneratorAction{
 public:
-  MyPrimaryGeneratorAction();
-  ~MyPrimaryGeneratorAction();
+  PrimaryGenerator();
+  ~PrimaryGenerator();
 
   virtual void GeneratePrimaries(G4Event* anEvent);
 private:
