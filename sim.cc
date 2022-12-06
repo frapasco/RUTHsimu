@@ -28,7 +28,9 @@ int main(int argc, char** argv){
   UImanager->ApplyCommand("/vis/viewpointVector 1 1 1");
   UImanager->ApplyCommand("/vis/drawVolume");
   UImanager->ApplyCommand("/vis/scene/add/axes 0 0 0 20 cm ");
-      
+  UImanager->ApplyCommand("/vis/viewer/set/autoRefresh true");
+  UImanager->ApplyCommand("/vis/scene/add/trajectories smoooth");
+  
   ui->SessionStart();
 
   return 0;
