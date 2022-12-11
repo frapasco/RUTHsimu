@@ -17,7 +17,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
 
   G4ThreeVector posAlpha = preStepPoint->GetPosition();
 
-  G4cout << "Particle position in PreDetector : " << posAlpha << endl;
+  G4cout << "Particle position in PreDetector : " << posAlpha << G4endl;
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
@@ -252,9 +252,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
 void DetectorConstruction::ConstructSDandField()
 {
-  SensitiveDetector *sensPreDet = new SensitiveDetector("sensitivePreDet");
-  //SensitiveDetector *sensPostDet = new SensitiveDetector("sensitivePostDet");
-  PreDetLog->SetSensitiveDetector(sensPreDet);
-  //PostDetLog->SetSensitiveDetector(sensPostDet);
+  //SensitiveDetector *sensPreDet = new SensitiveDetector("sensitivePreDet");
+  SensitiveDetector *sensPostDet = new SensitiveDetector("sensitivePostDet");
+  //PreDetLog->SetSensitiveDetector(sensPreDet);
+  PostDetLog->SetSensitiveDetector(sensPostDet);
 
 }
