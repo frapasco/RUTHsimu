@@ -41,7 +41,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   elAm241->AddIsotope(Am241, 100*perCent); //name, abundance
   G4Material* Americium241 = new G4Material("Americium241", 12 *g/cm3,1);
   Americium241->AddElement(elAm241,1);
-  G4Material* AuTarget = new G4Material("AuTarget", 79, 196.96657*g/mole, 325.e-6 *g/cm3);
+  G4Material* AuTarget = new G4Material("AuTarget", 79, 196.96657*g/mole, 325.e-6 *g/cm3); //da sistemare
 
   //vacuum to be implemented
   G4double atomicNumber = 1.;
@@ -198,6 +198,37 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   new G4PVPlacement(0, G4ThreeVector(0,0,0.5*totLength-0.5*targetThickness),
 		    TargetLog, "Target", supportLog, false, 0); //da cambiare G4ThreeVector
 
-  
+  //--------------------------------------------------------
+  //Detector------------------------------------------------
+  //--------------------------------------------------------
+
+  //D1
+  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //sistemo spessore + il placement (la larghezza mi sembra ok)
+  G4LogicalVolume *PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
+
+   /* for(G4int i = 0; i < 100; i++)
+    {
+      for(G4int j = 0; j < 100; i++)
+      {
+        new G4PVPlacement(0, G4ThreeVector(-0.5*cm + (i+0.5)*cm/100, -0.5*cm + (j+0.5)*cm/100, 0.51*cm), PreDetLog, "phys_PreDet", worldLog, false, j+i*100, true);
+      }
+    }*/
+    new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 1*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
+
+  //D2
+  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); ////sistemo questo + il placement
+  G4LogicalVolume *PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
+/*
+    for(G4int i = 0; i < 100; i++)
+    {
+      for(G4int j = 0; j < 100; i++)
+      {
+        new G4PVPlacement(0, G4ThreeVector(-0.5*cm + (i+0.5)*cm/100, -0.5*cm + (j+0.5)*cm/100, 0.49*cm), PostDetLog, "phys_PostDet", worldLog, false, j+i*100, true);
+      }
+    }
+*/
+    new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 0, true);
+
+
   return PhysicalWorld;
 }
