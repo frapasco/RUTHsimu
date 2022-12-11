@@ -3,6 +3,23 @@
 DetectorConstruction::DetectorConstruction(){}
 DetectorConstruction::~DetectorConstruction(){}
 
+SensitiveDetector::SensitiveDetector(G4String name) : G4VSensitiveDetector(name){}
+SensitiveDetector::~SensitiveDetector(){}
+
+G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
+{
+  G4Track *track = aStep->GetTrack();
+
+  //track->SetTrackStatus(fStopKill); //to kill a particle after 
+
+  G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
+  G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
+
+  G4ThreeVector posAlpha = preStepPoint->GetPosition();
+
+  G4cout << "Particle position in PreDetector : " << posAlpha << endl;
+}
+
 G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
   //visualization attributes--------------------------------
@@ -204,7 +221,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
   //D1
   G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //sistemo spessore + il placement (la larghezza mi sembra ok)
-  G4LogicalVolume *PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
+  PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
    /* for(G4int i = 0; i < 100; i++)
     {
@@ -217,7 +234,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
   //D2
   G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); ////sistemo questo + il placement
-  G4LogicalVolume *PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
+  PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
 /*
     for(G4int i = 0; i < 100; i++)
     {
@@ -231,4 +248,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
 
   return PhysicalWorld;
+}
+
+void DetectorConstruction::ConstructSDandField()
+{
+  SensitiveDetector *sensPreDet = new SensitiveDetector("sensitivePreDet");
+  //SensitiveDetector *sensPostDet = new SensitiveDetector("sensitivePostDet");
+  PreDetLog->SetSensitiveDetector(sensPreDet);
+  //PostDetLog->SetSensitiveDetector(sensPostDet);
+
 }

@@ -4,6 +4,7 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VPhysicalVolume.hh"
+#include "G4VSensitiveDetector.hh"
 #include "G4NistManager.hh" 
 #include "G4Material.hh"
 #include "G4Isotope.hh"
@@ -28,5 +29,18 @@ public:
   
 private:
   G4VPhysicalVolume* PhysicalWorld;
+  G4LogicalVolume* PreDetLog;
+  G4LogicalVolume* PostDetLog;
+  virtual void ConstructSDandField();
 };
+
+class SensitiveDetector : public G4VSensitiveDetector{
+public:
+  SensitiveDetector(G4String);
+  ~SensitiveDetector();
+
+private:
+  virtual G4bool ProcessHits(G4Step *, G4TouchableHistory *);
+};
+
 #endif
