@@ -8,6 +8,7 @@
 #include "G4ParticleTable.hh"
 #include "G4Geantino.hh"
 #include "G4IonTable.hh"
+#include "Randomize.hh"
 
 class ActionInitialization : public G4VUserActionInitialization{
 public:

@@ -1,4 +1,5 @@
 #include "DetectorConstruction.hh"
+#include "const.hh"
 
 DetectorConstruction::DetectorConstruction(){}
 DetectorConstruction::~DetectorConstruction(){}
@@ -6,8 +7,7 @@ DetectorConstruction::~DetectorConstruction(){}
 SensitiveDetector::SensitiveDetector(G4String name) : G4VSensitiveDetector(name){}
 SensitiveDetector::~SensitiveDetector(){}
 
-G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
-{
+G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist){
   G4Track *track = aStep->GetTrack();
 
   //track->SetTrackStatus(fStopKill); //to kill a particle after 
@@ -48,65 +48,28 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
   G4NistManager* nist = G4NistManager::Instance();
   
-  G4Material* defaultMat = nist->FindOrBuildMaterial("G4_AIR");//air
+  //  G4Material* defaultMat = nist->FindOrBuildMaterial("G4_AIR");//air
   G4Material* Al = nist->FindOrBuildMaterial("G4_Al");
   G4Material* Au = nist->FindOrBuildMaterial("G4_Au");
   G4Material* Am= nist->FindOrBuildMaterial("G4_Am");
   G4Material* Ag = nist->FindOrBuildMaterial("G4_Ag");
-  G4Isotope* Am241 = new G4Isotope("Am241", 95, 241, 241.056829*g/mole); // atomic number, number of nucleons, mass of mole
-  G4Element* elAm241 = new G4Element("elAm241", "Am-241", 1); //name, symbol, number of isotopes
-  elAm241->AddIsotope(Am241, 100*perCent); //name, abundance
+  G4Isotope* Am241 = new G4Isotope("Am241", 95, 241, 241.056829*g/mole);
+  G4Element* elAm241 = new G4Element("elAm241", "Am-241", 1);
+  elAm241->AddIsotope(Am241, 100*perCent);
   G4Material* Americium241 = new G4Material("Americium241", 12 *g/cm3,1);
   Americium241->AddElement(elAm241,1);
-  G4Material* AuTarget = new G4Material("AuTarget", 79, 196.96657*g/mole, 325.e-6 *g/cm3); //da sistemare
+  G4Material* AuTarget = new G4Material("AuTarget", 79, 196.96657*g/mole, 19.32 *g/cm3);
 
-  //vacuum to be implemented
+ 
   G4double atomicNumber = 1.;
   G4double massOfMole = 1.008*g/mole;
   G4double density = 1.e-25*g/cm3;
-  G4double temperature = 2.73*kelvin;
-  G4double pressure = 3.e-18*pascal;
+  G4double temperature = 300*kelvin;
+  G4double pressure = 3.e-8*bar;
   G4Material* vacuum = new G4Material("interGalactic", atomicNumber, massOfMole, density, kStateGas, temperature, pressure);
 
-  
-  //--------------------------------------------------------
-  //parameters----------------------------------------------
-  //--------------------------------------------------------
-  
-  //parameters that describe the source geometry
-  G4double sourceExtDiameter = 12.7*mm;
-  G4double coreDiameter = 7.*mm;
-  G4double sourceTotLength = 79.*mm;
-  G4double AuLayer1Thickness = 0.00051*mm;//layer A
-  G4double AuLayer2Thickness = 0.0010*mm;//layer B
-  G4double AmLayerThickness = 0.00051*mm;//layer C
-  G4double AuLayer3Thickness = 0.0008*mm;//layer D
-  G4double AgLayerThickness = 0.229*mm;//layer F
-  G4double sourceThickness = AuLayer1Thickness+AuLayer2Thickness+AmLayerThickness+AuLayer3Thickness+AgLayerThickness;
+  G4Material* defaultMat=vacuum;
 
-  //parameters of collimators and target geometry
-  //C1
-  G4double suppColl1X=12.05*mm;
-  G4double suppColl1Y=25.05*mm;
-  G4double collH1X = 4.05*mm;
-  G4double collH1Y = 7.05*mm;
-  G4double coll1Thickness = 1.55*mm;
-  G4double distC1 = 16.75*mm;
-  //C2
-  G4double suppColl2X=12.05*mm;
-  G4double suppColl2Y=25.00*mm;
-  G4double collH2X = 4.10*mm;
-  G4double collH2Y = 7.05*mm;
-  G4double coll2Thickness = 1.60*mm;
-  G4double distC2 = 0.*mm;//it is 0 since C2 and the source are in contact
-  //target
-  G4double targetDiameter = 25. *mm;
-  G4double targetThickness = 0.5 *mm;
-  G4double distTarget = 1.10*mm;
-
-  //totals
-  G4double totLength = sourceTotLength+distC2+coll2Thickness+distC1+coll1Thickness+distTarget+targetThickness;
-  
   //--------------------------------------------------------
   //world volume--------------------------------------------
   //--------------------------------------------------------
@@ -213,14 +176,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4LogicalVolume* TargetLog = new G4LogicalVolume(Target, AuTarget, "TargetLog");
   TargetLog->SetVisAttributes(solidYellow);
   new G4PVPlacement(0, G4ThreeVector(0,0,0.5*totLength-0.5*targetThickness),
-		    TargetLog, "Target", supportLog, false, 0); //da cambiare G4ThreeVector
-
+		    TargetLog, "Target", supportLog, false, 0);
+  
   //--------------------------------------------------------
   //Detector------------------------------------------------
   //--------------------------------------------------------
 
   //D1
-  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //sistemo spessore + il placement (la larghezza mi sembra ok)
+  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
   PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
    /* for(G4int i = 0; i < 100; i++)
@@ -230,10 +193,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         new G4PVPlacement(0, G4ThreeVector(-0.5*cm + (i+0.5)*cm/100, -0.5*cm + (j+0.5)*cm/100, 0.51*cm), PreDetLog, "phys_PreDet", worldLog, false, j+i*100, true);
       }
     }*/
+  
     new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 1*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
-  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); ////sistemo questo + il placement
+  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
   PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
 /*
     for(G4int i = 0; i < 100; i++)
@@ -244,12 +208,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       }
     }
 */
+  
     new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 0, true);
-
+  
 
   return PhysicalWorld;
 }
 
+//frapasco: remove inline in the definition (line33 in .hh)
+/*
 void DetectorConstruction::ConstructSDandField()
 {
   //SensitiveDetector *sensPreDet = new SensitiveDetector("sensitivePreDet");
@@ -258,3 +225,4 @@ void DetectorConstruction::ConstructSDandField()
   PostDetLog->SetSensitiveDetector(sensPostDet);
 
 }
+*/

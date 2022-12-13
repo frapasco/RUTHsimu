@@ -8,8 +8,7 @@
 #include "G4RadioactiveDecayPhysics.hh"
 
 
-class PhysicsList : public G4VModularPhysicsList
-{
+class PhysicsList : public G4VModularPhysicsList{
 public:
     PhysicsList();
     ~PhysicsList();

@@ -5,7 +5,6 @@
 #include "G4VisExecutive.hh"
 #include "G4UImanager.hh"
 
-
 #include "DetectorConstruction.hh"
 #include "physics.hh"
 #include "action.hh"
@@ -23,14 +22,13 @@ int main(int argc, char** argv){
   G4VisManager* visManager = new G4VisExecutive();
   visManager->Initialize();
 
-  G4UImanager* UImanager = G4UImanager::GetUIpointer();
-  UImanager->ApplyCommand("/vis/open OGL");
-  UImanager->ApplyCommand("/vis/viewpointVector 1 1 1");
-  UImanager->ApplyCommand("/vis/drawVolume");
-  UImanager->ApplyCommand("/vis/scene/add/axes 0 0 0 20 cm ");
-  UImanager->ApplyCommand("/vis/viewer/set/autoRefresh true");
-  UImanager->ApplyCommand("/vis/scene/add/trajectories smoooth");
   
+  G4UImanager* UImanager = G4UImanager::GetUIpointer();
+  UImanager->ApplyCommand("/control/execute macros/vis.mac");
+
+  //for vidualizing axes
+  //UImanager->ApplyCommand("/vis/scene/add/axes 0 0 0 20 cm ");
+
   ui->SessionStart();
 
   return 0;

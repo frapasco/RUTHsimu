@@ -28,10 +28,10 @@ target_link_libraries(sim ${Geant4_LIBRARIES})
 # build the project. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-#set(PROJECT_SCRIPTS
-#run.mac
-#vis.mac
-#)
+set(PROJECT_SCRIPTS
+#macros/run.mac
+macros/vis.mac
+)
  
 foreach(_script ${PROJECT_SCRIPTS})
   configure_file(

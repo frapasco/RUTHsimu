@@ -19,7 +19,6 @@
 #include "G4RotationMatrix.hh"
 #include "G4VisAttributes.hh"
 
-
 class DetectorConstruction : public G4VUserDetectorConstruction{
 public:
   DetectorConstruction();
@@ -31,7 +30,7 @@ private:
   G4VPhysicalVolume* PhysicalWorld;
   G4LogicalVolume* PreDetLog;
   G4LogicalVolume* PostDetLog;
-  virtual void ConstructSDandField();
+  inline virtual void ConstructSDandField(){} //frapasco: inline definition to be removed
 };
 
 class SensitiveDetector : public G4VSensitiveDetector{
