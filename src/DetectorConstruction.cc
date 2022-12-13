@@ -155,7 +155,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
   //Collimator 1
   G4VSolid* suppColl1 = new G4Box("SupportCollimator1", 0.5*suppColl1X, 0.5*suppColl1Y, 0.5*coll1Thickness);
-  G4VSolid* holeColl1 = new G4Box("HoleCollimator2", 0.5*collH1X, 0.5*collH1Y, 0.5*coll1Thickness);
+  G4VSolid* holeColl1 = new G4Box("HoleCollimator2", 0.5*collH1X, 0.5*collH1Y, coll1Thickness);
   G4VSolid* Collimator1 = new G4SubtractionSolid("SupportCollimator1-HoleCollimator1", suppColl1, holeColl1, 0, G4ThreeVector(0.*mm,-0.5*suppColl1Y+0.5*collH1Y+2.60*mm,0.*mm));
   G4LogicalVolume* Coll1Log = new G4LogicalVolume(Collimator1, Al, "Coll1Log");
   Coll1Log->SetVisAttributes(solidSilver);
@@ -164,7 +164,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   
   //Collimator 2
   G4VSolid* suppColl2 = new G4Box("SupportCollimator2", 0.5*suppColl2X, 0.5*suppColl2Y, 0.5*coll2Thickness);
-  G4VSolid* holeColl2 = new G4Box("HoleCollimator2", 0.5*collH2X, 0.5*collH2Y, 0.5*coll2Thickness);
+  G4VSolid* holeColl2 = new G4Box("HoleCollimator2", 0.5*collH2X, 0.5*collH2Y, coll2Thickness);
   G4VSolid* Collimator2 = new G4SubtractionSolid("SupportCollimator2-HoleCollimator2", suppColl2, holeColl2, 0, G4ThreeVector(0.*mm,-0.5*suppColl2Y+0.5*collH2Y+2.55*mm,0.*mm)); 
   G4LogicalVolume* Coll2Log = new G4LogicalVolume(Collimator2, Al, "Coll2Log");
   Coll2Log->SetVisAttributes(solidSilver);
