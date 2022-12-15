@@ -1,6 +1,12 @@
+#ifndef CONSTANTS
+#define CONSTANTS
+
 //--------------------------------------------------------
 //parameters----------------------------------------------
 //--------------------------------------------------------
+
+//world volume
+const G4double world_width = 30*cm;
 
 //parameters that describe the source geometry
 const G4double sourceExtDiameter = 12.7*mm;
@@ -35,4 +41,7 @@ const G4double distTarget = 1.10*mm;
 //totals
 const G4double sourceThickness = AuLayer1Thickness+AuLayer2Thickness+AmLayerThickness+AuLayer3Thickness+AgLayerThickness;
 const G4double totLength = sourceTotLength+distC2+coll2Thickness+distC1+coll1Thickness+distTarget+targetThickness;
-const G4double americiumZ = -(targetThickness+distTarget+coll1Thickness+distC1+coll2Thickness+distC2+AuLayer1Thickness+AuLayer2Thickness);//beginning of the americium layer starting from the side closer to the target
+//beginning of the americium layer starting from the side closer to the target
+const G4double americiumZ = -(targetThickness+distTarget+coll1Thickness+distC1+coll2Thickness+distC2+AuLayer1Thickness+AuLayer2Thickness);
+
+#endif

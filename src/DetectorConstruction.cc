@@ -73,8 +73,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
   //world volume--------------------------------------------
   //--------------------------------------------------------
-  G4Box* worldBox = new G4Box("World", 20*cm,20*cm,20*cm);
-  G4LogicalVolume* worldLog = new G4LogicalVolume(worldBox, defaultMat, "WorldLog");
+  G4Box* solidWorld = new G4Box("World", world_width,world_width,world_width);
+  G4LogicalVolume* worldLog = new G4LogicalVolume(solidWorld, defaultMat, "WorldLog");
   PhysicalWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), worldLog, "physWorld", 0, false, 0, true);
   
   //--------------------------------------------------------
