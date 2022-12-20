@@ -25,12 +25,13 @@ public:
   ~DetectorConstruction();
   
   virtual G4VPhysicalVolume* Construct();
+  virtual void ConstructSDandField();
   
 private:
   G4VPhysicalVolume* PhysicalWorld;
+  
   G4LogicalVolume* PreDetLog;
   G4LogicalVolume* PostDetLog;
-  inline virtual void ConstructSDandField(){} //frapasco: inline definition to be removed
 };
 
 class SensitiveDetector : public G4VSensitiveDetector{
@@ -39,7 +40,7 @@ public:
   ~SensitiveDetector();
 
 private:
-  virtual G4bool ProcessHits(G4Step *, G4TouchableHistory *);
+  virtual G4bool ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist);
 };
 
 #endif

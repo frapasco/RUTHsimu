@@ -1,6 +1,9 @@
 #include "action.hh"
 #include "const.hh"
 
+//comment the following line if radndomized cosines are wanted
+//#define RANDOMCOS
+
 ActionInitialization::ActionInitialization(){}
 ActionInitialization::~ActionInitialization(){}
 
@@ -50,8 +53,18 @@ void PrimaryGenerator::GeneratePrimaries(G4Event *anEvent){
   y0 += dy0*(G4UniformRand());
   z0 += dz0*(G4UniformRand());
 
-  G4ThreeVector pos(x0,y0,z0); //generated at center of Am241
+  G4ThreeVector pos(x0,y0,z0); //generated randomized around the center of Am241
   fParticleGun->SetParticlePosition(pos);
+  
+  #ifdef RANDOMCOS
+  //randomized cosines
+  G4double cosTheta = -1.0 + 2.0 * G4UniformRand();
+  G4double phi = 2*CLHEP::pi*G4UniformRand();
+  G4double sinTheta = sqrt(1. - cosTheta*cosTheta);
+  // these are the cosines for an isotropic direction
+  G4ThreeVector mom(sinTheta*cos(phi), sinTheta*sin(phi), cosTheta);
+  fParticleGun -> SetParticleMomentumDirection(mom);
+  #endif
   
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }

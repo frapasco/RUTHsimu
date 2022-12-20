@@ -10,7 +10,7 @@ SensitiveDetector::~SensitiveDetector(){}
 G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist){
   G4Track *track = aStep->GetTrack();
 
-  //track->SetTrackStatus(fStopKill); //to kill a particle after 
+  track->SetTrackStatus(fStopAndKill); //to kill a particle after 
 
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
   G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
@@ -18,6 +18,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4ThreeVector posAlpha = preStepPoint->GetPosition();
 
   G4cout << "Particle position in PreDetector : " << posAlpha << G4endl;
+  return true;
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
@@ -194,7 +195,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       }
     }*/
   
-    new G4PVPlacement(0, G4ThreeVector(0., 0., 0. - 1*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
+    new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
   G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
@@ -216,13 +217,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 }
 
 //frapasco: remove inline in the definition (line33 in .hh)
-/*
+
 void DetectorConstruction::ConstructSDandField()
 {
   //SensitiveDetector *sensPreDet = new SensitiveDetector("sensitivePreDet");
+  G4String name = "sensitivePostDet";
   SensitiveDetector *sensPostDet = new SensitiveDetector("sensitivePostDet");
   //PreDetLog->SetSensitiveDetector(sensPreDet);
   PostDetLog->SetSensitiveDetector(sensPostDet);
 
 }
-*/
+
