@@ -10,7 +10,7 @@ SensitiveDetector::~SensitiveDetector(){}
 G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist){
   G4Track *track = aStep->GetTrack();
 
-  track->SetTrackStatus(fStopAndKill); //to kill a particle after 
+  //track->SetTrackStatus(fStopKill); //to kill a particle after 
 
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
   G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
@@ -18,7 +18,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4ThreeVector posAlpha = preStepPoint->GetPosition();
 
   G4cout << "Particle position in PreDetector : " << posAlpha << G4endl;
-  return true;
+  
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
