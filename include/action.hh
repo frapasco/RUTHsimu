@@ -10,6 +10,8 @@
 #include "G4IonTable.hh"
 #include "Randomize.hh"
 
+#include "run.hh"
+
 class ActionInitialization : public G4VUserActionInitialization{
 public:
   ActionInitialization();

@@ -18,6 +18,8 @@
 #include "G4SubtractionSolid.hh"
 #include "G4RotationMatrix.hh"
 #include "G4VisAttributes.hh"
+#include "G4RunManager.hh"
+#include "G4AnalysisManager.hh"
 
 class DetectorConstruction : public G4VUserDetectorConstruction{
 public:

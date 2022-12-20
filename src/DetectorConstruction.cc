@@ -10,7 +10,7 @@ SensitiveDetector::~SensitiveDetector(){}
 G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist){
   G4Track *track = aStep->GetTrack();
 
-  track->SetTrackStatus(fStopAndKill); //to kill a particle after 
+  //track->SetTrackStatus(fStopAndKill); //to kill a particle after 
 
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
   G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
@@ -18,6 +18,23 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4ThreeVector posAlpha = preStepPoint->GetPosition();
 
   G4cout << "Particle position in PreDetector : " << posAlpha << G4endl;
+
+  //const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
+
+  //G4int copyNo = touchable->GetCopyNumber();
+
+  //G4VPhysicalVolume *physVol = touchable->GetVolume();
+  //G4ThreeVector posDetector = physVol->GetTranslation();
+
+  G4cout << "Detector position: " <<G4endl;// posDetector << G4endl;
+
+  //G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+  G4AnalysisManager *man = G4AnalysisManager::Instance();
+  man->FillNtupleIColumn(0, posAlpha);
+  /*man->FillNtupleDColumn(1, posDetector[0]);
+  man->FillNtupleDColumn(2, posDetector[1]);
+  man->FillNtupleDColumn(3, posDetector[2]);
+  man->AddNtupleRow(0);*/
   return true;
 }
 
@@ -200,17 +217,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //D2
   G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
   PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
-/*
-    for(G4int i = 0; i < 100; i++)
+  /*
+    for(G4int i = 0; i < 1; i++)
     {
-      for(G4int j = 0; j < 100; i++)
+      for(G4int j = 0; j < 1; i++)
       {
-        new G4PVPlacement(0, G4ThreeVector(-0.5*cm + (i+0.5)*cm/100, -0.5*cm + (j+0.5)*cm/100, 0.49*cm), PostDetLog, "phys_PostDet", worldLog, false, j+i*100, true);
+        new G4PVPlacement(0, G4ThreeVector(0., 0. , 4.*mm),
+                                            PostDetLog, "phys_PostDet", worldLog, false, j+i*1, true);
       }
     }
-*/
+  */
   
-    new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 0, true);
   
 
   return PhysicalWorld;
