@@ -10,10 +10,16 @@ void MyRunAction::BeginOfRunAction(const G4Run*)
 
     man->OpenFile("output.root");
     man->CreateNtuple("Hits","Hits");
-    man->CreateNtupleIColumn("fEvent");
-    man->CreateNtupleDColumn("fX");
-    man->CreateNtupleDColumn("fY");
-    man->CreateNtupleDColumn("fZ");
+    man->CreateNtupleIColumn("fPostEvent");
+    man->CreateNtupleDColumn("fPost1X");
+    man->CreateNtupleDColumn("fPost1Y");
+    man->CreateNtupleDColumn("fPost1Z");
+    man->CreateNtupleDColumn("fPost2X");
+    man->CreateNtupleDColumn("fPost2Y");
+    man->CreateNtupleDColumn("fPost2Z");
+    man->CreateNtupleDColumn("fPreX");
+    man->CreateNtupleDColumn("fPreY");
+    man->CreateNtupleDColumn("fPreZ");
     man->FinishNtuple(0);
 }
 
