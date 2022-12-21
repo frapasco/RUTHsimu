@@ -28,7 +28,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
 
   //G4int copyNo = touchable->GetCopyNumber();
 
-  G4VPhysicalVolume *PostDetLog = touchable->GetVolume();
+  //G4VPhysicalVolume *physVol = touchable->GetVolume();
   //G4ThreeVector posDetector = physVol->GetTranslation();
 
   //G4cout << "Detector position: " << posDetector << G4endl;
