@@ -32,6 +32,7 @@ public:
 private:
   G4VPhysicalVolume* PhysicalWorld;
   
+  
   G4LogicalVolume* PreDetLog;
   G4LogicalVolume* PostDetLog;
 };
@@ -43,6 +44,7 @@ public:
 
 private:
   virtual G4bool ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist);
+  G4VPhysicalVolume* physVol;
 };
 
 #endif
