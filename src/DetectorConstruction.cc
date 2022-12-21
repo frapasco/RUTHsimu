@@ -26,9 +26,11 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
 
   const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
 
-  //G4int copyNo = touchable->GetCopyNumber();
+  G4int copyNo = touchable->GetCopyNumber();
 
-  //G4VPhysicalVolume *physVol = touchable->GetVolume();
+  G4VPhysicalVolume *physVol = touchable->GetVolume();
+  G4int pre = touchable->GetCopyNumber(1);
+  G4cout << "copy number of pre ? " << copyNo << G4endl;
   //G4ThreeVector posDetector = physVol->GetTranslation();
 
   //G4cout << "Detector position: " << posDetector << G4endl;
@@ -216,7 +218,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
   PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 1, true);
 
   //D2
   G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
