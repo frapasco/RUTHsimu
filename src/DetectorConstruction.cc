@@ -38,17 +38,70 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
   G4AnalysisManager *man = G4AnalysisManager::Instance();
   man->FillNtupleIColumn(0, evt);
+
   man->FillNtupleDColumn(1, posAlphaPost1[0]);
   man->FillNtupleDColumn(2, posAlphaPost1[1]);
   man->FillNtupleDColumn(3, posAlphaPost1[2]);
   man->FillNtupleDColumn(4, posAlphaPost2[0]);
   man->FillNtupleDColumn(5, posAlphaPost2[1]);
   man->FillNtupleDColumn(6, posAlphaPost2[2]);
+
   man->FillNtupleDColumn(1, posAlphaPre[0]);
   man->FillNtupleDColumn(2, posAlphaPre[1]);
   man->FillNtupleDColumn(3, posAlphaPre[2]);
   man->AddNtupleRow(0);
-  
+
+  /*
+// get volume of the current step
+  G4LogicalVolume* volume = astep->GetPreStepPoint()->GetTouchableHandle()
+      ->GetVolume()->GetLogicalVolume();
+
+  G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+  G4AnalysisManager *man = G4AnalysisManager::Instance(); 
+
+  -----------non so dove possa andare la parte sopra, però questa sarebbe un'idea (?)-----------------
+
+  if (volume != fScoringVolume) //as the predetector
+  {
+    G4Track *track = aStep->GetTrack();
+    
+    G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
+    
+    G4ThreeVector posAlphaPre = preStepPoint->GetPosition();
+    G4cout << "Particle position in PreDetector at beginning : " << posAlphaPre << G4endl;
+
+    man->FillNtupleIColumn(0, evt);
+    man->FillNtupleDColumn(1, posAlphaPre[0]);
+    man->FillNtupleDColumn(2, posAlphaPre[1]);
+    man->FillNtupleDColumn(3, posAlphaPre[2]);
+  }
+
+  else if (volume != fScoringVolume) //as the post detector
+  {
+    G4Track *track = aStep->GetTrack();
+    //track->SetTrackStatus(fStopAndKill);
+
+    G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
+    G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
+
+    G4ThreeVector posAlphaPost1 = preStepPoint->GetPosition();
+    G4ThreeVector posAlphaPost2 = postStepPoint->GetPosition();
+
+    G4cout << "Particle position in PostDetector at beginning : " << posAlphaPost1 << G4endl;
+    G4cout << "Particle position in PostDetector at end : " << posAlphaPost2 << G4endl;
+   
+    man->FillNtupleDColumn(1, posAlphaPost1[0]);
+    man->FillNtupleDColumn(2, posAlphaPost1[1]);
+    man->FillNtupleDColumn(3, posAlphaPost1[2]);
+    man->FillNtupleDColumn(4, posAlphaPost2[0]);
+    man->FillNtupleDColumn(5, posAlphaPost2[1]);
+    man->FillNtupleDColumn(6, posAlphaPost2[2]);
+    man->AddNtupleRow(0);
+
+  }
+
+  */
+
   return true;
 }
 
