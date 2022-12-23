@@ -1,8 +1,8 @@
 #include "action.hh"
 #include "const.hh"
 
-//comment the following line if radndomized cosines are wanted
-//#define RANDOMCOS
+//comment the following line if radndomized cosines are NOT wanted
+#define RANDOMCOS
 
 ActionInitialization::ActionInitialization(){}
 ActionInitialization::~ActionInitialization(){}
