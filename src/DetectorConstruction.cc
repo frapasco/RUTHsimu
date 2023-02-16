@@ -15,93 +15,34 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
   G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
-  G4ThreeVector posAlphaPost1 = preStepPoint->GetPosition();
-  G4ThreeVector posAlphaPost2 = postStepPoint->GetPosition();
-  G4ThreeVector posAlphaPre = preStepPoint->GetPosition();
-
-  G4cout << "Particle position in PostDetector at beginning : " << posAlphaPost1 << G4endl;
-  G4cout << "Particle position in PostDetector at end : " << posAlphaPost2 << G4endl;
-  G4cout << "Particle position in PreDetector at beginning : " << posAlphaPre << G4endl;
-
+  G4ThreeVector prePos = preStepPoint->GetPosition();
+  G4ThreeVector postPos = postStepPoint->GetPosition();
 
   const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
-
   G4int copyNo = touchable->GetCopyNumber();
-
-  G4VPhysicalVolume *physVol = touchable->GetVolume();
-  G4int pre = touchable->GetCopyNumber(1);
-  G4cout << "copy number of pre ? " << copyNo << G4endl;
-  //G4ThreeVector posDetector = physVol->GetTranslation();
-
-  //G4cout << "Detector position: " << posDetector << G4endl;
-
+  
+  G4cout << "copy number" << copyNo << G4endl;
+  G4cout << "Particle position at beginning : " << prePos << G4endl;
+  G4cout << "Particle position at end : " << postPos << G4endl;
+  
   G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
   G4AnalysisManager *man = G4AnalysisManager::Instance();
+  //the filling must be done with respect to the detector hit
   man->FillNtupleIColumn(0, evt);
-
-  man->FillNtupleDColumn(1, posAlphaPost1[0]);
-  man->FillNtupleDColumn(2, posAlphaPost1[1]);
-  man->FillNtupleDColumn(3, posAlphaPost1[2]);
-  man->FillNtupleDColumn(4, posAlphaPost2[0]);
-  man->FillNtupleDColumn(5, posAlphaPost2[1]);
-  man->FillNtupleDColumn(6, posAlphaPost2[2]);
-
-  man->FillNtupleDColumn(1, posAlphaPre[0]);
-  man->FillNtupleDColumn(2, posAlphaPre[1]);
-  man->FillNtupleDColumn(3, posAlphaPre[2]);
+ 
+  //PRE POSITIONS column: 1 2 3
+  man->FillNtupleDColumn(1, prePos[0]);
+  man->FillNtupleDColumn(2, prePos[1]);
+  man->FillNtupleDColumn(3, prePos[2]);
+  //POST POSITIONS column: 4 5 6 
+  man->FillNtupleDColumn(4, postPos[0]);
+  man->FillNtupleDColumn(5, postPos[1]);
+  man->FillNtupleDColumn(6, postPos[2]);
+  
+  //filling with copyNo
+  man->FillNtupleIColumn(7, copyNo);
+  
   man->AddNtupleRow(0);
-
-  /*
-// get volume of the current step
-  G4LogicalVolume* volume = astep->GetPreStepPoint()->GetTouchableHandle()
-      ->GetVolume()->GetLogicalVolume();
-
-  G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
-  G4AnalysisManager *man = G4AnalysisManager::Instance(); 
-
-  -----------non so dove possa andare la parte sopra, però questa sarebbe un'idea (?)-----------------
-
-  if (volume != fScoringVolume) //as the predetector
-  {
-    G4Track *track = aStep->GetTrack();
-    
-    G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
-    
-    G4ThreeVector posAlphaPre = preStepPoint->GetPosition();
-    G4cout << "Particle position in PreDetector at beginning : " << posAlphaPre << G4endl;
-
-    man->FillNtupleIColumn(0, evt);
-    man->FillNtupleDColumn(1, posAlphaPre[0]);
-    man->FillNtupleDColumn(2, posAlphaPre[1]);
-    man->FillNtupleDColumn(3, posAlphaPre[2]);
-  }
-
-  else if (volume != fScoringVolume) //as the post detector
-  {
-    G4Track *track = aStep->GetTrack();
-    //track->SetTrackStatus(fStopAndKill);
-
-    G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
-    G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
-
-    G4ThreeVector posAlphaPost1 = preStepPoint->GetPosition();
-    G4ThreeVector posAlphaPost2 = postStepPoint->GetPosition();
-
-    G4cout << "Particle position in PostDetector at beginning : " << posAlphaPost1 << G4endl;
-    G4cout << "Particle position in PostDetector at end : " << posAlphaPost2 << G4endl;
-   
-    man->FillNtupleDColumn(1, posAlphaPost1[0]);
-    man->FillNtupleDColumn(2, posAlphaPost1[1]);
-    man->FillNtupleDColumn(3, posAlphaPost1[2]);
-    man->FillNtupleDColumn(4, posAlphaPost2[0]);
-    man->FillNtupleDColumn(5, posAlphaPost2[1]);
-    man->FillNtupleDColumn(6, posAlphaPost2[2]);
-    man->AddNtupleRow(0);
-
-  }
-
-  */
-
   return true;
 }
 
@@ -268,16 +209,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
 
   //D1
-  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
+  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
   PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 1, true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
-  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
+  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version
   PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
     
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 1, true);
   
 
   return PhysicalWorld;

@@ -9,17 +9,21 @@ void MyRunAction::BeginOfRunAction(const G4Run*)
     G4AnalysisManager *man = G4AnalysisManager::Instance();
 
     man->OpenFile("output.root");
+
     man->CreateNtuple("Hits","Hits");
-    man->CreateNtupleIColumn("fPostEvent");
-    man->CreateNtupleDColumn("fPost1X");
-    man->CreateNtupleDColumn("fPost1Y");
-    man->CreateNtupleDColumn("fPost1Z");
-    man->CreateNtupleDColumn("fPost2X");
-    man->CreateNtupleDColumn("fPost2Y");
-    man->CreateNtupleDColumn("fPost2Z");
-    man->CreateNtupleDColumn("fPreX");
-    man->CreateNtupleDColumn("fPreY");
-    man->CreateNtupleDColumn("fPreZ");
+    man->CreateNtupleIColumn("EventNo");
+
+    //PRE POSITIONS column: 1 2 3 
+    man->CreateNtupleDColumn("XPRE");
+    man->CreateNtupleDColumn("YPRE");
+    man->CreateNtupleDColumn("ZPRE");
+    //POST POSITIONS column: 4 5 6
+    man->CreateNtupleDColumn("XPOST");
+    man->CreateNtupleDColumn("YPOST");
+    man->CreateNtupleDColumn("ZPOST");
+
+    //in order to divide the hits of the two detectors they are all recorded in both vectors, but later on in analysis one has to sort them with copyNo
+    man->CreateNtupleIColumn("copyNo");
     man->FinishNtuple(0);
 }
 
