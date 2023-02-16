@@ -22,6 +22,9 @@ void MyRunAction::BeginOfRunAction(const G4Run*)
     man->CreateNtupleDColumn("YPOST");
     man->CreateNtupleDColumn("ZPOST");
 
+    //energy deposited on detector
+    man->CreateNtupleDColumn("eDep");
+    
     //in order to divide the hits of the two detectors they are all recorded in both vectors, but later on in analysis one has to sort them with copyNo
     man->CreateNtupleIColumn("copyNo");
     man->FinishNtuple(0);

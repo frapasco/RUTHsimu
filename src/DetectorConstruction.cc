@@ -15,6 +15,8 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
   G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
+  G4double eDep = aStep->GetTotalEnergyDeposit();
+  
   G4ThreeVector prePos = preStepPoint->GetPosition();
   G4ThreeVector postPos = postStepPoint->GetPosition();
 
@@ -24,7 +26,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4cout << "copy number" << copyNo << G4endl;
   G4cout << "Particle position at beginning : " << prePos << G4endl;
   G4cout << "Particle position at end : " << postPos << G4endl;
-  
+
   G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
   G4AnalysisManager *man = G4AnalysisManager::Instance();
   //the filling must be done with respect to the detector hit
@@ -38,9 +40,12 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   man->FillNtupleDColumn(4, postPos[0]);
   man->FillNtupleDColumn(5, postPos[1]);
   man->FillNtupleDColumn(6, postPos[2]);
+
+  //energy deposited on detector
+  man->FillNtupleDColumn(7, eDep);
   
   //filling with copyNo
-  man->FillNtupleIColumn(7, copyNo);
+  man->FillNtupleIColumn(8, copyNo);
   
   man->AddNtupleRow(0);
   return true;
