@@ -209,13 +209,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
 
   //D1
-  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
+  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
   PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
   new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
-  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version
+  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
   PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
     
   new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 1, true);
