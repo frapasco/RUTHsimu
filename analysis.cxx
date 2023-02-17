@@ -18,8 +18,10 @@
 #include <TCanvas.h>
 #include <TText.h>
 
+//number of max hits read, it shoudn't be too larger than the simulated particles for a better memory management
 const Int_t nMaxTotalHits = 10000;
 
+//arrays to be filled with branches content
 Int_t EventNo[nMaxTotalHits]={0};
 Double_t XPRE[nMaxTotalHits]={0.};
 Double_t YPRE[nMaxTotalHits]={0.};
@@ -30,13 +32,14 @@ Double_t ZPOST[nMaxTotalHits]={0.};
 Double_t eDep[nMaxTotalHits]={0.};
 Int_t copyNo[nMaxTotalHits]={0};
 
+//methods that reads the file 
 void readTTree(){  
   TString inputFileName="output.root";
   TFile *inFile=new TFile(inputFileName,"READ");
   
   TTree *hitTree=(TTree*)inFile->Get("Hits");
   
-  // Set branch addresses.
+  //set branch addresses
   hitTree->SetBranchAddress("EventNo",&EventNo);
   hitTree->SetBranchAddress("XPRE",XPRE);
   hitTree->SetBranchAddress("YPRE",YPRE);
@@ -53,6 +56,7 @@ void readTTree(){
   inFile->Close();
 }
 
+//method to be called
 void analysis(){
   readTTree();
   //before target
