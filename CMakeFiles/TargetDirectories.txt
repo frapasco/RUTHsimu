@@ -1,7 +1,0 @@
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/sim.dir
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/edit_cache.dir
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/rebuild_cache.dir
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/list_install_components.dir
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/install.dir
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/install/local.dir
-/home/pasco/Documents/geant4/ruthSimu/CMakeFiles/install/strip.dir
