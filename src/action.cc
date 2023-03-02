@@ -2,7 +2,7 @@
 #include "const.hh"
 
 //comment the following line if radndomized cosines are NOT wanted
-#define RANDOMCOS
+//#define RANDOMCOS
 
 ActionInitialization::ActionInitialization(){}
 ActionInitialization::~ActionInitialization(){}

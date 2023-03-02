@@ -9,7 +9,7 @@ SensitiveDetector::~SensitiveDetector(){}
 
 G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist){
   G4Track *track = aStep->GetTrack();
-
+  
   //track->SetTrackStatus(fStopAndKill); //to kill a particle after 
 
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
@@ -19,35 +19,40 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   
   G4ThreeVector prePos = preStepPoint->GetPosition();
   G4ThreeVector postPos = postStepPoint->GetPosition();
-
+  //getPDG number and keep just alphas
+  
+  G4String name =track->GetDefinition()->GetParticleName();
   const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
   G4int copyNo = touchable->GetCopyNumber();
-  
-  G4cout << "copy number" << copyNo << G4endl;
-  G4cout << "Particle position at beginning : " << prePos << G4endl;
-  G4cout << "Particle position at end : " << postPos << G4endl;
-
+  //  G4int evt = track->GetTrackID();
   G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
-  G4AnalysisManager *man = G4AnalysisManager::Instance();
-  //the filling must be done with respect to the detector hit
-  man->FillNtupleIColumn(0, evt);
+  if(name=="alpha"){
+    G4cout << "event number " << evt << G4endl;
+    G4cout << "name " << name << G4endl;
+    G4cout << "copy number " << copyNo << G4endl;
+    G4cout << "Particle position at beginning : " << prePos << G4endl;
+    G4cout << "Particle position at end : " << postPos << G4endl;
+    G4AnalysisManager *man = G4AnalysisManager::Instance();
+    //the filling must be done with respect to the detector hit
+    man->FillNtupleIColumn(0, evt);
  
-  //PRE POSITIONS column: 1 2 3
-  man->FillNtupleDColumn(1, prePos[0]);
-  man->FillNtupleDColumn(2, prePos[1]);
-  man->FillNtupleDColumn(3, prePos[2]);
-  //POST POSITIONS column: 4 5 6 
-  man->FillNtupleDColumn(4, postPos[0]);
-  man->FillNtupleDColumn(5, postPos[1]);
-  man->FillNtupleDColumn(6, postPos[2]);
+    //PRE POSITIONS column: 1 2 3
+    man->FillNtupleDColumn(1, prePos[0]);
+    man->FillNtupleDColumn(2, prePos[1]);
+    man->FillNtupleDColumn(3, prePos[2]);
+    //POST POSITIONS column: 4 5 6 
+    man->FillNtupleDColumn(4, postPos[0]);
+    man->FillNtupleDColumn(5, postPos[1]);
+    man->FillNtupleDColumn(6, postPos[2]);
 
-  //energy deposited on detector
-  man->FillNtupleDColumn(7, eDep);
+    //energy deposited on detector
+    man->FillNtupleDColumn(7, eDep);
   
-  //filling with copyNo
-  man->FillNtupleIColumn(8, copyNo);
+    //filling with copyNo
+    man->FillNtupleIColumn(8, copyNo);
   
-  man->AddNtupleRow(0);
+    man->AddNtupleRow(0);
+  }
   return true;
 }
 
@@ -214,7 +219,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
 
   //D1
-  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
+  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1.5*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
   PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
   new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);

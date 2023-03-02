@@ -7,7 +7,7 @@ MyRunAction::~MyRunAction(){}
 void MyRunAction::BeginOfRunAction(const G4Run*)
 {
     G4AnalysisManager *man = G4AnalysisManager::Instance();
-
+    G4int nAlpha=0;
     man->OpenFile("output.root");
 
     man->CreateNtuple("Hits","Hits");
