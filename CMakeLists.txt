@@ -31,8 +31,6 @@ target_link_libraries(sim ${Geant4_LIBRARIES})
 set(PROJECT_SCRIPTS
 macros/run.mac
 macros/vis.mac
-include/analysis.h
-Analysis.cxx
 test.cxx
 )
  

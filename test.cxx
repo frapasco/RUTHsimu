@@ -61,14 +61,50 @@ void readTTree(){
   int nentries = hitTree->GetEntries();
   std::cout<<"got "<<nentries<<" events"<<std::endl;
 
-  vector<int> v;
-
+  vector<int> vEventNo;
+  vector<double> vXPRE;
+  vector<double> vYPRE;
+  vector<double> vZPRE;
+  vector<double> vXPOST;
+  vector<double> vYPOST;
+  vector<double> vZPOST;
+  vector<double> veDep;
+  vector<long> vcopyNo;
+  
   for(int i=0; i<nentries;i++){
     inbranch1->GetEntry(i);
-    v.push_back(EventNo);
+    vEventNo.push_back(EventNo);
+    //PRE POS
+    inbranch2->GetEntry(i);
+    vXPRE.push_back(XPRE);
+    inbranch3->GetEntry(i);
+    vYPRE.push_back(YPRE);
+    inbranch4->GetEntry(i);
+    vZPRE.push_back(ZPRE);
+    //POST POS
+    inbranch5->GetEntry(i);
+    vXPOST.push_back(XPOST);
+    inbranch6->GetEntry(i);
+    vYPOST.push_back(YPOST);
+    inbranch7->GetEntry(i);
+    vZPOST.push_back(ZPOST);
+
+    inbranch8->GetEntry(i);
+    veDep.push_back(eDep);
+    inbranch9->GetEntry(i);
+    vcopyNo.push_back(copyNo);
+
   }
-  for(int i=0;i<v.size();i++){
-    std::cout<<v.at(i)<<std::endl;
+  for(int i=0;i<vEventNo.size();i++){
+    std::cout<<vEventNo.at(i)<<std::endl;
+    std::cout<<"x"<<vXPRE.at(i)<<std::endl;
+    std::cout<<"y"<<vYPRE.at(i)<<std::endl;
+    std::cout<<"z"<<vZPRE.at(i)<<std::endl;
+    std::cout<<"x"<<vXPOST.at(i)<<std::endl;
+    std::cout<<"y"<<vYPOST.at(i)<<std::endl;
+    std::cout<<"z"<<vZPOST.at(i)<<std::endl;
+    std::cout<<veDep.at(i)<<std::endl;
+    std::cout<<vcopyNo.at(i)<<std::endl;
   }
 
   inFile->Close();
