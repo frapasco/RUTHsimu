@@ -31,7 +31,9 @@ target_link_libraries(sim ${Geant4_LIBRARIES})
 set(PROJECT_SCRIPTS
 macros/run.mac
 macros/vis.mac
-analysis.cxx
+include/analysis.h
+Analysis.cxx
+test.cxx
 )
  
 foreach(_script ${PROJECT_SCRIPTS})
