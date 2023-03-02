@@ -3,33 +3,33 @@
 //number of max hits read, it shoudn't be too larger than the simulated particles for a better memory management
 const Int_t nMaxTotalHits = 100;
 
-int EventNo;
-double XPRE;
-double YPRE;
-double ZPRE;
-double XPOST;
-double YPOST;
-double ZPOST;
-int eDep;
-long copyNo;
-/*
-//arrays to be filled with branches content
-Int_t EventNo[nMaxTotalHits];
-Double_t XPRE[nMaxTotalHits];
-Double_t YPRE[nMaxTotalHits];
-Double_t ZPRE[nMaxTotalHits];
-Double_t XPOST[nMaxTotalHits];
-Double_t YPOST[nMaxTotalHits];
-Double_t ZPOST[nMaxTotalHits];
-Double_t eDep[nMaxTotalHits];
-Int_t copyNo[nMaxTotalHits];
-Long64_t nentries;
-*/
+//arrays to be filled with leaves content
+vector<int> vEventNo;
+vector<double> vXPRE;
+vector<double> vYPRE;
+vector<double> vZPRE;
+vector<double> vXPOST;
+vector<double> vYPOST;
+vector<double> vZPOST;
+vector<double> veDep;
+vector<long> vcopyNo;
+
 //methods that reads the file 
 void readTTree(){ 
   TFile *inFile = new TFile("output.root");
   TTree *hitTree=(TTree*)inFile->Get("Hits");
 
+  //leaves
+  int EventNo;
+  double XPRE;
+  double YPRE;
+  double ZPRE;
+  double XPOST;
+  double YPOST;
+  double ZPOST;
+  int eDep;
+  long copyNo;
+  
   //set branch addresses
   TBranch *inbranch1 = hitTree->GetBranch("EventNo");
   inbranch1->SetAddress(&EventNo);
@@ -49,28 +49,10 @@ void readTTree(){
   inbranch8->SetAddress(&eDep);
   TBranch *inbranch9 = hitTree->GetBranch("copyNo");
   inbranch9->SetAddress(&copyNo);
-  /*
-  hitTree->SetBranchAddress("EventNo",&EventNo);
-  hitTree->SetBranchAddress("XPRE",XPRE);
-  hitTree->SetBranchAddress("YPRE",YPRE);
-	@@ -49,29 +69,50 @@ void readTTree(){
-  hitTree->SetBranchAddress("ZPOST",ZPOST);
-  hitTree->SetBranchAddress("eDep",eDep);
-  hitTree->SetBranchAddress("copyNo",&copyNo);
-  */
+
   int nentries = hitTree->GetEntries();
   std::cout<<"got "<<nentries<<" events"<<std::endl;
-
-  vector<int> vEventNo;
-  vector<double> vXPRE;
-  vector<double> vYPRE;
-  vector<double> vZPRE;
-  vector<double> vXPOST;
-  vector<double> vYPOST;
-  vector<double> vZPOST;
-  vector<double> veDep;
-  vector<long> vcopyNo;
-  
+  //filling the vectors
   for(int i=0; i<nentries;i++){
     inbranch1->GetEntry(i);
     vEventNo.push_back(EventNo);

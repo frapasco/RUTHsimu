@@ -225,10 +225,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
-  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
+  /*G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version*/
+  G4VSolid* PostDet/*sphereDetPost*/ = new G4Sphere("SphereDetPost", 0.5*77.70*mm, 0.5*80*mm, 0*deg,360*deg, 0*deg, 180*deg);
+  G4VSolid* holeDetPost = new G4Cons ("holeDetPost", 0*mm, 15*mm, G4double pRmin2, G4double pRmax2, 90*mm, 0*deg, 360*mm);
+  // G4Solid* PostDet = new G4SubtractionSolid("Post-Detector", sphereDetPost, holeDetPost, 0, G4ThreeVector(0.*mm,0.*mm,0.*mm));
   PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
     
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 1, true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.*mm), PostDetLog, "phys_PostDet", worldLog, false, 1, true);
   
 
   return PhysicalWorld;
