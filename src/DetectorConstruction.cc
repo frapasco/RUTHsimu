@@ -188,7 +188,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   AgLayerLog->SetVisAttributes(solidSilver);
   new G4PVPlacement(0, G4ThreeVector(0.*m, 0.*m, 0.5*sourceThickness-AuLayer1Thickness-AuLayer2Thickness-AmLayerThickness-AuLayer3Thickness-0.5*AgLayerThickness),
 		    AgLayerLog, "AgLayer", sourceCoreLog, false, 0);
-
+  
   //Collimator 1
   G4VSolid* suppColl1 = new G4Box("SupportCollimator1", 0.5*suppColl1X, 0.5*suppColl1Y, 0.5*coll1Thickness);
   G4VSolid* holeColl1 = new G4Box("HoleCollimator2", 0.5*collH1X, 0.5*collH1Y, coll1Thickness);

@@ -25,7 +25,7 @@ PrimaryGenerator::PrimaryGenerator(){
   G4ThreeVector mom(0.,0.,1.);//particle generated along z-direction
 
   fParticleGun->SetParticleMomentumDirection(mom);
-  fParticleGun->SetParticleMomentum(100.*MeV);
+  fParticleGun->SetParticleMomentum(0*MeV);
   fParticleGun->SetParticleDefinition(particle);
 
 }
