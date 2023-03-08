@@ -94,13 +94,13 @@ void readTTree(){
 void analysis(){
   readTTree();
   TCanvas *c1 = new TCanvas();
-  TH1D* h = new TH1D("","",200,0,200);
+  TH1D* h = new TH1D("","",1000,-80,80);
   c1->cd()->SetGrid();
   TVector3 z(0,0,1);
   for(int i=0;i<vYPRE.size();i++){
     TVector3 v (vXPRE[i],vYPRE[i],vZPRE[i]);
     double theta = v.Angle(z);//TMath::ACos(vZPRE[i]/TMath::Sqrt(TMath::Power(vXPRE[i],2)+TMath::Power(vYPRE[i],2)+TMath::Power(vZPRE[i],2)));
-    h->Fill(theta*180/TMath::Pi());
+    h->Fill(theta);
   }
   c1->cd(); h->Draw();
 }
