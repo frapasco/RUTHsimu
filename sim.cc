@@ -25,16 +25,12 @@ int main(int argc, char** argv){
   runManager->Initialize();
  
   G4UIExecutive* ui = new G4UIExecutive(argc,argv);
-  #ifdef DEBUG
   G4VisManager* visManager = new G4VisExecutive();
   visManager->Initialize();
-  #endif
+  
   
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
-  
-  #ifdef DEBUG
   UImanager->ApplyCommand("/control/execute macros/vis.mac");
-  #endif
   UImanager->ApplyCommand("/control/execute macros/run.mac");
   
   //for vidualizing axes
