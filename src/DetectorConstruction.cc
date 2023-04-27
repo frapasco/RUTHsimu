@@ -27,11 +27,13 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   //  G4int evt = track->GetTrackID();
   G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
   if(name=="alpha"){
+    #ifdef DEBUG
     G4cout << "event number " << evt << G4endl;
     G4cout << "name " << name << G4endl;
     G4cout << "copy number " << copyNo << G4endl;
     G4cout << "Particle position at beginning : " << prePos << G4endl;
     G4cout << "Particle position at end : " << postPos << G4endl;
+    #endif
     G4AnalysisManager *man = G4AnalysisManager::Instance();
     //the filling must be done with respect to the detector hit
     man->FillNtupleIColumn(0, evt);
