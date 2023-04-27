@@ -100,7 +100,7 @@ void analysis(){
   TCanvas *c3 = new TCanvas();
   TH1D* h1 = new TH1D("","",200000,0,200000);
   c3->cd()->SetGrid();
-  TH2D* hXY = new TH2D("","",600,-3000,3000,600,-3000,3000);
+  TH2D* hXY = new TH2D("","",600,-60,60,600,-60,60);
   c2->cd()->SetGrid();
   TVector3 z(0,0,1);
   for(int i=0;i<vYPRE.size();i++){

@@ -43,5 +43,6 @@ const G4double sourceThickness = AuLayer1Thickness+AuLayer2Thickness+AmLayerThic
 const G4double totLength = sourceTotLength+distC2+coll2Thickness+distC1+coll1Thickness+distTarget+targetThickness;
 //beginning of the americium layer starting from the side closer to the target
 const G4double americiumZ = -(targetThickness+distTarget+coll1Thickness+distC1+coll2Thickness+distC2+AuLayer1Thickness+AuLayer2Thickness);
+const G4double sourceZ = -(targetThickness+distTarget+coll1Thickness+distC1+coll2Thickness+distC2);
 
 #endif

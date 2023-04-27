@@ -14,7 +14,7 @@ int main(int argc, char** argv){
   runManager->SetUserInitialization(new DetectorConstruction());
   runManager->SetUserInitialization(new PhysicsList());
   runManager->SetUserInitialization(new ActionInitialization());
-    
+  G4Random::setTheEngine(new CLHEP::MTwistEngine);
   runManager->Initialize();
  
   G4UIExecutive* ui = new G4UIExecutive(argc,argv);
