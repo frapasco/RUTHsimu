@@ -94,13 +94,24 @@ void readTTree(){
 void analysis(){
   readTTree();
   TCanvas *c1 = new TCanvas();
+  TCanvas *c2 = new TCanvas();
   TH1D* h = new TH1D("","",200,0,200);
   c1->cd()->SetGrid();
+  TCanvas *c3 = new TCanvas();
+  TH1D* h1 = new TH1D("","",200000,0,200000);
+  c3->cd()->SetGrid();
+  TH2D* hXY = new TH2D("","",600,-3000,3000,600,-3000,3000);
+  c2->cd()->SetGrid();
   TVector3 z(0,0,1);
   for(int i=0;i<vYPRE.size();i++){
     TVector3 v (vXPRE[i],vYPRE[i],vZPRE[i]);
+    hXY->Fill(vXPRE[i],vYPRE[i]);
     double theta = v.Angle(z);//TMath::ACos(vZPRE[i]/TMath::Sqrt(TMath::Power(vXPRE[i],2)+TMath::Power(vYPRE[i],2)+TMath::Power(vZPRE[i],2)));
+    double thetaProp = TMath::Sqrt(TMath::Power(vXPRE[i],2)+TMath::Power(vYPRE[i],2)+TMath::Power(vZPRE[i],2));
     h->Fill(theta*180/TMath::Pi());
+    h1->Fill(thetaProp*180/TMath::Pi());
   }
   c1->cd(); h->Draw();
+  c3->cd(); h1->Draw("COLZ");
+  c2->cd(); hXY->Draw("COLZ");
 }

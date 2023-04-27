@@ -206,14 +206,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   Coll2Log->SetVisAttributes(solidSilver);
   new G4PVPlacement(0, G4ThreeVector(0,0.5*sourceExtDiameter,0.5*totLength-targetThickness-distTarget-coll1Thickness-distC1-0.5*coll2Thickness),
 		    Coll2Log, "Collimator2", supportLog, false, 0);
-  
+  /*
   //Target
   G4Tubs* Target = new G4Tubs("Target", 0.*mm, 0.5*targetDiameter, 0.5*targetThickness, 0.*deg, 360.*deg);
   G4LogicalVolume* TargetLog = new G4LogicalVolume(Target, AuTarget, "TargetLog");
   TargetLog->SetVisAttributes(solidYellow);
   new G4PVPlacement(0, G4ThreeVector(0,0,0.5*totLength-0.5*targetThickness),
 		    TargetLog, "Target", supportLog, false, 0);
-  
+  */
   //--------------------------------------------------------
   //Detector------------------------------------------------
   //--------------------------------------------------------
