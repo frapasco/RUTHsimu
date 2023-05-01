@@ -29,8 +29,9 @@ target_link_libraries(sim ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(PROJECT_SCRIPTS
-#macros/run.mac
+macros/run.mac
 macros/vis.mac
+#test.cxx
 )
  
 foreach(_script ${PROJECT_SCRIPTS})

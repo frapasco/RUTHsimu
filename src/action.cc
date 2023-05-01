@@ -1,7 +1,7 @@
 #include "action.hh"
 #include "const.hh"
 
-//comment the following line if radndomized cosines are wanted
+//comment the following line if radndomized cosines are NOT wanted
 //#define RANDOMCOS
 
 ActionInitialization::ActionInitialization(){}
@@ -49,10 +49,10 @@ void PrimaryGenerator::GeneratePrimaries(G4Event *anEvent){
   //randomized position
   G4double x0  = 0.*mm, y0 = 0.*mm , z0 = americiumZ-0.5*AmLayerThickness;
   G4double dx0 = 0.5*coreDiameter, dy0 = 0.5*coreDiameter, dz0 = 0.5*AmLayerThickness;
-  x0 += dx0*(G4UniformRand());
+  /*  x0 += dx0*(G4UniformRand());
   y0 += dy0*(G4UniformRand());
   z0 += dz0*(G4UniformRand());
-
+  */
   G4ThreeVector pos(x0,y0,z0); //generated randomized around the center of Am241
   fParticleGun->SetParticlePosition(pos);
   

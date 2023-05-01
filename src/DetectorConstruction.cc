@@ -9,15 +9,51 @@ SensitiveDetector::~SensitiveDetector(){}
 
 G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist){
   G4Track *track = aStep->GetTrack();
-
-  track->SetTrackStatus(fStopAndKill); //to kill a particle after 
+  //track->SetTrackStatus(fStopAndKill); //to kill a particle after 
 
   G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
   G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
-  G4ThreeVector posAlpha = preStepPoint->GetPosition();
+  G4double eDep = aStep->GetTotalEnergyDeposit();
+  
+  G4ThreeVector prePos = preStepPoint->GetPosition();
+  G4ThreeVector postPos = postStepPoint->GetPosition();
+  //getPDG number and keep just alphas
+  
+  G4String name =track->GetDefinition()->GetParticleName();
+  const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
+  G4int copyNo = touchable->GetCopyNumber();
+  //  G4int evt = track->GetTrackID();
+  G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+  if(name=="alpha"){
+    #ifdef DEBUG
+    G4cout << "event number " << evt << G4endl;
+    G4cout << "name " << name << G4endl;
+    G4cout << "copy number " << copyNo << G4endl;
+    G4cout << "Particle position at beginning : " << prePos << G4endl;
+    G4cout << "Particle position at end : " << postPos << G4endl;
+    #endif
+    G4AnalysisManager *man = G4AnalysisManager::Instance();
+    //the filling must be done with respect to the detector hit
+    man->FillNtupleIColumn(0, evt);
+ 
+    //PRE POSITIONS column: 1 2 3
+    man->FillNtupleDColumn(1, prePos[0]);
+    man->FillNtupleDColumn(2, prePos[1]);
+    man->FillNtupleDColumn(3, prePos[2]);
+    //POST POSITIONS column: 4 5 6 
+    man->FillNtupleDColumn(4, postPos[0]);
+    man->FillNtupleDColumn(5, postPos[1]);
+    man->FillNtupleDColumn(6, postPos[2]);
 
-  G4cout << "Particle position in PreDetector : " << posAlpha << G4endl;
+    //energy deposited on detector
+    man->FillNtupleDColumn(7, eDep);
+  
+    //filling with copyNo
+    man->FillNtupleIColumn(8, copyNo);
+  
+    man->AddNtupleRow(0);
+  }
   return true;
 }
 
@@ -184,33 +220,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //--------------------------------------------------------
 
   //D1
-  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
+  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1.5*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
   PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
 
-   /* for(G4int i = 0; i < 100; i++)
-    {
-      for(G4int j = 0; j < 100; i++)
-      {
-        new G4PVPlacement(0, G4ThreeVector(-0.5*cm + (i+0.5)*cm/100, -0.5*cm + (j+0.5)*cm/100, 0.51*cm), PreDetLog, "phys_PreDet", worldLog, false, j+i*100, true);
-      }
-    }*/
-  
-    new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
-  G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version
+  /*G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version*/
+  G4VSolid* PostDet = new G4Sphere("SphereDetPost", 0.5*77.70*mm, 0.5*80*mm, 0*deg,360*deg, 0*deg, 150*deg);
   PostDetLog = new G4LogicalVolume(PostDet, defaultMat, "PostDetLog");
-/*
-    for(G4int i = 0; i < 100; i++)
-    {
-      for(G4int j = 0; j < 100; i++)
-      {
-        new G4PVPlacement(0, G4ThreeVector(-0.5*cm + (i+0.5)*cm/100, -0.5*cm + (j+0.5)*cm/100, 0.49*cm), PostDetLog, "phys_PostDet", worldLog, false, j+i*100, true);
-      }
-    }
-*/
-  
-    new G4PVPlacement(0, G4ThreeVector(0., 0., 0.+ 4. *mm), PostDetLog, "phys_PostDet", worldLog, false, 0, true);
+    
+  new G4PVPlacement(0, G4ThreeVector(0., 0., 0.*mm), PostDetLog, "phys_PostDet", worldLog, false, 1, true);
   
 
   return PhysicalWorld;

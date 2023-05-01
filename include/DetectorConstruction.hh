@@ -14,10 +14,14 @@
 #include "G4PVPlacement.hh"
 #include "G4Box.hh"
 #include "G4Tubs.hh"
+#include "G4Sphere.hh"
+#include "G4Cons.hh"
 #include "G4UnionSolid.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4RotationMatrix.hh"
 #include "G4VisAttributes.hh"
+#include "G4RunManager.hh"
+#include "G4AnalysisManager.hh"
 
 class DetectorConstruction : public G4VUserDetectorConstruction{
 public:
@@ -30,6 +34,7 @@ public:
 private:
   G4VPhysicalVolume* PhysicalWorld;
   
+  
   G4LogicalVolume* PreDetLog;
   G4LogicalVolume* PostDetLog;
 };
@@ -41,6 +46,6 @@ public:
 
 private:
   virtual G4bool ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist);
+  G4VPhysicalVolume* physVol;
 };
-
 #endif

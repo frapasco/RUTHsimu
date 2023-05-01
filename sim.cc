@@ -25,7 +25,8 @@ int main(int argc, char** argv){
   
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
   UImanager->ApplyCommand("/control/execute macros/vis.mac");
-
+  UImanager->ApplyCommand("/control/execute macros/run.mac");
+  
   //for vidualizing axes
   //UImanager->ApplyCommand("/vis/scene/add/axes 0 0 0 20 cm ");
 
