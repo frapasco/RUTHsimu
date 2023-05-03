@@ -6,6 +6,8 @@
 //#include "g4root.hh" substituted by next line
 #include "G4AnalysisManager.hh"
 
+#include "macros.hh"
+
 class MyRunAction : public G4UserRunAction
 {
 public:

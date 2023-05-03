@@ -1,12 +1,6 @@
 #include "action.hh"
 #include "const.hh"
 
-//comment the following line if randomized cosines are NOT wanted
-//#define RANDOMCOS
-#define RANDOMPOS
-//comment the following line if the LISE++ calculation is wanted
-//#define AM
-
 ActionInitialization::ActionInitialization(){}
 ActionInitialization::~ActionInitialization(){}
 

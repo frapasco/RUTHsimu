@@ -6,7 +6,7 @@
 //--------------------------------------------------------
 
 //world volume
-const G4double world_width = 30*cm;
+const G4double world_width = 15*cm;
 
 //parameters that describe the source geometry
 const G4double sourceExtDiameter = 12.7*mm;

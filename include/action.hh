@@ -12,6 +12,8 @@
 
 #include "run.hh"
 
+#include "macros.hh"
+
 class ActionInitialization : public G4VUserActionInitialization{
 public:
   ActionInitialization();

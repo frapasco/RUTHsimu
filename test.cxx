@@ -1,6 +1,8 @@
 #include <TText.h>
 #include <vector>
 
+#define DEBUG
+
 //arrays to be filled with leaves content
 vector<int> vEventNo;
 vector<double> vXPRE;
@@ -75,6 +77,8 @@ void readTTree(){
     vcopyNo.push_back(copyNo);
 
   }
+
+#ifdef DEBUG
   for(int i=0;i<vEventNo.size();i++){
     std::cout<<vEventNo.at(i)<<std::endl;
     std::cout<<"x"<<vXPRE.at(i)<<std::endl;
@@ -86,7 +90,7 @@ void readTTree(){
     std::cout<<veDep.at(i)<<std::endl;
     std::cout<<vcopyNo.at(i)<<std::endl;
   }
-
+#endif
   inFile->Close();
 }
 

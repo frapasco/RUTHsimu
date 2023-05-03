@@ -1,9 +1,6 @@
 #include "DetectorConstruction.hh"
 #include "const.hh"
 
-//comment the following line for more verbosity
-//#define DEBUG
-
 DetectorConstruction::DetectorConstruction(){}
 DetectorConstruction::~DetectorConstruction(){}
 
@@ -120,7 +117,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //source support------------------------------------------
   //--------------------------------------------------------
   //mother volume
-  G4Box* support = new G4Box("support", 12.05*mm, 50.*mm, 0.5*totLength);
+  G4Box* support = new G4Box("support", 12.05*mm, 30.*mm, 0.5*totLength);
   G4LogicalVolume* supportLog = new G4LogicalVolume(support, defaultMat, "supportLog");
   new G4PVPlacement(0, G4ThreeVector(0.*mm, 0.*mm, -0.5*totLength), supportLog, "support", worldLog, false, 0);
   
@@ -209,23 +206,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   Coll2Log->SetVisAttributes(solidSilver);
   new G4PVPlacement(0, G4ThreeVector(0,0.5*sourceExtDiameter,0.5*totLength-targetThickness-distTarget-coll1Thickness-distC1-0.5*coll2Thickness),
 		    Coll2Log, "Collimator2", supportLog, false, 0);
-  
+
+#ifndef DEBUG
   //Target
   G4Tubs* Target = new G4Tubs("Target", 0.*mm, 0.5*targetDiameter, 0.5*targetThickness, 0.*deg, 360.*deg);
   G4LogicalVolume* TargetLog = new G4LogicalVolume(Target, AuTarget, "TargetLog");
   TargetLog->SetVisAttributes(solidYellow);
   new G4PVPlacement(0, G4ThreeVector(0,0,0.5*totLength-0.5*targetThickness),
 		    TargetLog, "Target", supportLog, false, 0);
-  
+#endif
+
   //--------------------------------------------------------
   //Detector------------------------------------------------
   //--------------------------------------------------------
-
-  //D1
-  G4Box* PreDet = new G4Box("Pre-Detector", 0.5 * 10* mm, 0.5* 10* mm, 0.5 *1.5*mm); //frapasco: to be changed to non hard-coded version, the thickness is ok
-  PreDetLog = new G4LogicalVolume(PreDet, defaultMat, "PreDetLog");
-
-  new G4PVPlacement(0, G4ThreeVector(0., 0., 0. -distTarget*mm), PreDetLog, "phys_PreDet", worldLog, false, 0, true);
 
   //D2
   /*G4Box* PostDet = new G4Box("Post-Detector", 0.5 * 40* mm, 0.5* 40* mm, 0.5 *4*mm); //frapasco: to be changed to non hard-coded version*/

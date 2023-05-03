@@ -7,6 +7,7 @@
 #include "G4DecayPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
 
+#include "macros.hh"
 
 class PhysicsList : public G4VModularPhysicsList{
 public:

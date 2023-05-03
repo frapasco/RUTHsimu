@@ -23,6 +23,8 @@
 #include "G4RunManager.hh"
 #include "G4AnalysisManager.hh"
 
+#include "macros.hh"
+
 class DetectorConstruction : public G4VUserDetectorConstruction{
 public:
   DetectorConstruction();
