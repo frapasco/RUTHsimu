@@ -1,8 +1,10 @@
 #include "action.hh"
 #include "const.hh"
 
-//comment the following line if radndomized cosines are NOT wanted
+//comment the following line if randomized cosines are NOT wanted
 //#define RANDOMCOS
+//comment the following line if the LISE++ calculation is wanted
+//#define AM
 
 ActionInitialization::ActionInitialization(){}
 ActionInitialization::~ActionInitialization(){}
@@ -10,6 +12,10 @@ ActionInitialization::~ActionInitialization(){}
 void ActionInitialization::Build() const{
   PrimaryGenerator *generator = new PrimaryGenerator();
   SetUserAction(generator);
+
+  MyRunAction *runAction = new MyRunAction();
+  SetUserAction(runAction);
+
 }
 
 PrimaryGenerator::PrimaryGenerator(){
@@ -39,16 +45,27 @@ void PrimaryGenerator::GeneratePrimaries(G4Event *anEvent){
     G4int A = 4;
 
     G4double charge = 2.*eplus;
-    G4double energy = 4.9*MeV; //frapasco: to be fixed
+    //alpha from the Americium layer
+    #ifdef AM
+    G4double energy = 5.486*MeV;
+    #else
+    //LISE++ alpha after the target
+    G4double energy = 4.81*MeV;
+    #endif
 
     G4ParticleDefinition *ion = G4IonTable::GetIonTable()->GetIon(Z, A, energy);
     fParticleGun->SetParticleDefinition(ion);
     fParticleGun->SetParticleCharge(charge);
   }
-  
+
   //randomized position
+  #ifdef AM
   G4double x0  = 0.*mm, y0 = 0.*mm , z0 = americiumZ-0.5*AmLayerThickness;
   G4double dx0 = 0.5*coreDiameter, dy0 = 0.5*coreDiameter, dz0 = 0.5*AmLayerThickness;
+  #else
+  G4double x0  = 0.*mm, y0 = 0.*mm , z0 = sourceZ;
+  G4double dx0 = 0.5*coreDiameter, dy0 = 0.5*coreDiameter, dz0 = 0.5*AmLayerThickness;
+  #endif
   /*  x0 += dx0*(G4UniformRand());
   y0 += dy0*(G4UniformRand());
   z0 += dz0*(G4UniformRand());
@@ -63,8 +80,10 @@ void PrimaryGenerator::GeneratePrimaries(G4Event *anEvent){
   G4double sinTheta = sqrt(1. - cosTheta*cosTheta);
   // these are the cosines for an isotropic direction
   G4ThreeVector mom(sinTheta*cos(phi), sinTheta*sin(phi), cosTheta);
+  #else
+  G4ThreeVector mom(0.,0.,1.);//particle generated along z-direction
   fParticleGun -> SetParticleMomentumDirection(mom);
   #endif
-  
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
+

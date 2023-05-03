@@ -1,6 +1,9 @@
 #include "DetectorConstruction.hh"
 #include "const.hh"
 
+//comment the following line for more verbosity
+//#define DEBUG
+
 DetectorConstruction::DetectorConstruction(){}
 DetectorConstruction::~DetectorConstruction(){}
 
@@ -19,12 +22,13 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   G4ThreeVector prePos = preStepPoint->GetPosition();
   G4ThreeVector postPos = postStepPoint->GetPosition();
   //getPDG number and keep just alphas
-  
+
   G4String name =track->GetDefinition()->GetParticleName();
   const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
   G4int copyNo = touchable->GetCopyNumber();
   //  G4int evt = track->GetTrackID();
   G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+  auto man = G4AnalysisManager::Instance();
   if(name=="alpha"){
     #ifdef DEBUG
     G4cout << "event number " << evt << G4endl;
@@ -33,10 +37,8 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
     G4cout << "Particle position at beginning : " << prePos << G4endl;
     G4cout << "Particle position at end : " << postPos << G4endl;
     #endif
-    G4AnalysisManager *man = G4AnalysisManager::Instance();
     //the filling must be done with respect to the detector hit
     man->FillNtupleIColumn(0, evt);
- 
     //PRE POSITIONS column: 1 2 3
     man->FillNtupleDColumn(1, prePos[0]);
     man->FillNtupleDColumn(2, prePos[1]);
@@ -51,9 +53,9 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *R0hist)
   
     //filling with copyNo
     man->FillNtupleIColumn(8, copyNo);
-  
     man->AddNtupleRow(0);
-  }
+    }
+
   return true;
 }
 

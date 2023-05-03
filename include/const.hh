@@ -20,14 +20,14 @@ const G4double AgLayerThickness = 0.229*mm;//layer F
 
 //parameters of collimators and target geometry
 //C1
-const G4double suppColl1X = 12.05*mm;
+const G4double suppColl1X = 13.05*mm;
 const G4double suppColl1Y = 25.05*mm;
 const G4double collH1X = 4.05*mm;
 const G4double collH1Y = 7.05*mm;
 const G4double coll1Thickness = 1.55*mm;
 const G4double distC1 = 16.75*mm;
 //C2
-const G4double suppColl2X = 12.05*mm;
+const G4double suppColl2X = 13.05*mm;
 const G4double suppColl2Y = 25.00*mm;
 const G4double collH2X = 4.10*mm;
 const G4double collH2Y = 7.05*mm;
@@ -43,5 +43,6 @@ const G4double sourceThickness = AuLayer1Thickness+AuLayer2Thickness+AmLayerThic
 const G4double totLength = sourceTotLength+distC2+coll2Thickness+distC1+coll1Thickness+distTarget+targetThickness;
 //beginning of the americium layer starting from the side closer to the target
 const G4double americiumZ = -(targetThickness+distTarget+coll1Thickness+distC1+coll2Thickness+distC2+AuLayer1Thickness+AuLayer2Thickness);
+const G4double sourceZ = -(targetThickness+distTarget+coll1Thickness+distC1+coll2Thickness+distC2);
 
 #endif
