@@ -3,6 +3,7 @@
 
 //comment the following line if randomized cosines are NOT wanted
 //#define RANDOMCOS
+#define RANDOMPOS
 //comment the following line if the LISE++ calculation is wanted
 //#define AM
 
@@ -58,32 +59,40 @@ void PrimaryGenerator::GeneratePrimaries(G4Event *anEvent){
     fParticleGun->SetParticleCharge(charge);
   }
 
-  //randomized position
-  #ifdef AM
+#ifdef AM
   G4double x0  = 0.*mm, y0 = 0.*mm , z0 = americiumZ-0.5*AmLayerThickness;
   G4double dx0 = 0.5*coreDiameter, dy0 = 0.5*coreDiameter, dz0 = 0.5*AmLayerThickness;
-  #else
+#else
   G4double x0  = 0.*mm, y0 = 0.*mm , z0 = sourceZ;
-  G4double dx0 = 0.5*coreDiameter, dy0 = 0.5*coreDiameter, dz0 = 0.5*AmLayerThickness;
-  #endif
-  /*  x0 += dx0*(G4UniformRand());
-  y0 += dy0*(G4UniformRand());
-  z0 += dz0*(G4UniformRand());
-  */
-  G4ThreeVector pos(x0,y0,z0); //generated randomized around the center of Am241
+  G4double dx0 = 0.5*coreDiameter, dy0 = 0.5*coreDiameter, dz0 = 0;//it has to be 0 since we calculated the energy wiht LISE++
+#endif
+  
+  //randomized position
+#ifdef RANDOMPOS
+  G4double r = 0.5*coreDiameter;
+  G4double randRadius = r * std::sqrt(G4UniformRand());
+  G4double theta = 2.0 * CLHEP::pi * G4UniformRand();
+  x0 = randRadius * std::cos(theta);
+  y0 = randRadius * std::sin(theta);
+  G4ThreeVector pos(x0,y0,z0);
+#endif
+  
+   //generated randomized around the center of Am241
   fParticleGun->SetParticlePosition(pos);
   
-  #ifdef RANDOMCOS
+#ifdef RANDOMCOS
   //randomized cosines
   G4double cosTheta = -1.0 + 2.0 * G4UniformRand();
   G4double phi = 2*CLHEP::pi*G4UniformRand();
   G4double sinTheta = sqrt(1. - cosTheta*cosTheta);
   // these are the cosines for an isotropic direction
   G4ThreeVector mom(sinTheta*cos(phi), sinTheta*sin(phi), cosTheta);
-  #else
+  fParticleGun -> SetParticleMomentumDirection(mom);
+#else
   G4ThreeVector mom(0.,0.,1.);//particle generated along z-direction
   fParticleGun -> SetParticleMomentumDirection(mom);
-  #endif
+#endif
+  
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
 
