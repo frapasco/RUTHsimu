@@ -78,7 +78,7 @@ void readTTree(){
 
   }
 
-#ifdef DEBUG
+  /*
   for(int i=0;i<vEventNo.size();i++){
     std::cout<<vEventNo.at(i)<<std::endl;
     std::cout<<"x"<<vXPRE.at(i)<<std::endl;
@@ -90,7 +90,7 @@ void readTTree(){
     std::cout<<veDep.at(i)<<std::endl;
     std::cout<<vcopyNo.at(i)<<std::endl;
   }
-#endif
+  */
   inFile->Close();
 }
 
