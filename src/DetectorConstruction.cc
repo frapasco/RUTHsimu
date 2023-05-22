@@ -94,7 +94,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   elAm241->AddIsotope(Am241, 100*perCent);
   G4Material* Americium241 = new G4Material("Americium241", 12 *g/cm3,1);
   Americium241->AddElement(elAm241,1);
-#ifndef //Au
+#ifndef NICKEL//Au
   G4Material* TargetMat = new G4Material("TargetMat", 79, 196.96657*g/mole, 19.32 *g/cm3);
 #else //Ni
   G4Material* TargetMat = new G4Material("TargetMat", 79, 58.6934*g/mole, 	8.90*g/cm3);
