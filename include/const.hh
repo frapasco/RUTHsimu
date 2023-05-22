@@ -35,8 +35,8 @@ const G4double coll2Thickness = 1.60*mm;
 const G4double distC2 = 0.*mm;//it is 0 since C2 and the source are in contact
 //target
 const G4double targetDiameter = 25. *mm;
-const G4double targetThickness = 1.68219e-6 *m;//1.68219e-6 *mm;
 const G4double distTarget = 1.10*mm;
+const G4double targetThickness = 1.68219e-6 *m;//1.68219e-6 *mm;
 
 //totals
 const G4double sourceThickness = AuLayer1Thickness+AuLayer2Thickness+AmLayerThickness+AuLayer3Thickness+AgLayerThickness;

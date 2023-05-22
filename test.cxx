@@ -99,7 +99,7 @@ void analysis(){
   readTTree();
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
-  TH1D* h = new TH1D("","",200,0,200);
+  TH1D* h = new TH1D("","",2000,0,80);
   c1->cd()->SetGrid();
   TCanvas *c3 = new TCanvas();
   TH1D* h1 = new TH1D("","",200000,0,200000);
@@ -112,7 +112,7 @@ void analysis(){
     hXY->Fill(vXPRE[i],vYPRE[i]);
     double theta = v.Angle(z);//TMath::ACos(vZPRE[i]/TMath::Sqrt(TMath::Power(vXPRE[i],2)+TMath::Power(vYPRE[i],2)+TMath::Power(vZPRE[i],2)));
     double thetaProp = TMath::Sqrt(TMath::Power(vXPRE[i],2)+TMath::Power(vYPRE[i],2)+TMath::Power(vZPRE[i],2));
-    h->Fill(theta*180/TMath::Pi());
+    h->Fill(theta*180/TMath::Pi(),1/theta);
     h1->Fill(thetaProp*180/TMath::Pi());
   }
   c1->cd(); h->Draw();

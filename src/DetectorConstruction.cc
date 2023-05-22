@@ -94,8 +94,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   elAm241->AddIsotope(Am241, 100*perCent);
   G4Material* Americium241 = new G4Material("Americium241", 12 *g/cm3,1);
   Americium241->AddElement(elAm241,1);
-  G4Material* AuTarget = new G4Material("AuTarget", 79, 196.96657*g/mole, 19.32 *g/cm3);
-
+#ifndef //Au
+  G4Material* TargetMat = new G4Material("TargetMat", 79, 196.96657*g/mole, 19.32 *g/cm3);
+#else //Ni
+  G4Material* TargetMat = new G4Material("TargetMat", 79, 58.6934*g/mole, 	8.90*g/cm3);
+#endif
  
   G4double atomicNumber = 1.;
   G4double massOfMole = 1.008*g/mole;
@@ -210,7 +213,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 #ifndef DEBUG
   //Target
   G4Tubs* Target = new G4Tubs("Target", 0.*mm, 0.5*targetDiameter, 0.5*targetThickness, 0.*deg, 360.*deg);
-  G4LogicalVolume* TargetLog = new G4LogicalVolume(Target, AuTarget, "TargetLog");
+  G4LogicalVolume* TargetLog = new G4LogicalVolume(Target, TargetMat, "TargetLog");
   TargetLog->SetVisAttributes(solidYellow);
   new G4PVPlacement(0, G4ThreeVector(0,0,0.5*totLength-0.5*targetThickness),
 		    TargetLog, "Target", supportLog, false, 0);

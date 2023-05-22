@@ -19,3 +19,6 @@
 
 //for a random seed
 #define RANDOMSEED
+
+//for Nickel target
+#define NICKEL
